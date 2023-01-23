@@ -1,0 +1,150 @@
+@import url(https://fonts.googleapis.com/css?family=Roboto:400,500,300,700);
+body{
+    background-color: white !important;
+}
+
+.chatNav{
+    background-color: rgba(128, 128, 128, 0.158);
+    padding: 10px 20px;
+    display: flex;
+}
+
+.chatNav img{
+    -ms-transform: translateZ(0); /* IE 9 */
+    -webkit-transform: translateZ(0); /* Chrome, Safari, Opera */
+    transform: translateZ(0);
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;         /* Firefox */
+    image-rendering:   -o-crisp-edges;         /* Opera */
+    image-rendering: -webkit-optimize-contrast;/* Webkit (non-standard naming) */
+    image-rendering: crisp-edges;
+    -ms-interpolation-mode: nearest-neighbor;  /* IE (non-standard property) */
+    border-radius: 50%;
+
+}
+
+.chatNav p{
+    position: relative;
+    top: -3px;
+    color: #3f3f3f;
+    font-weight: 500;
+    text-transform: capitalize;
+
+}
+
+.chatBox{
+    width: calc(60vw);
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #ece5dd;
+    /* padding-bottom: 20px; */
+    margin-top: 10px;
+    padding-top: 20px;
+    border-radius: 5px;
+}
+
+.myMsg{
+    background-color: #25d36549;
+    display: inline-flex;
+    padding: 0px 15px;
+    border-radius: 4px;
+    float: right;
+    margin-right: 20px;
+}
+
+.myMsg p{
+    font-weight: 400;
+    color: black;
+    padding: 6px 0px !important;
+    margin: 0px !important;
+    font-size: 16px;
+
+    
+}
+
+.myMsg span{
+    font-size: 12px;
+    color: black;
+    position: relative;
+    top: 16px;
+    padding-left: 5px;
+}
+
+.recipientMsg{
+    background-color: white;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    display: inline-flex;
+    padding: 0px 15px;
+    border-radius: 4px;
+    margin-top: 20px;
+    margin-left: 20px;
+
+}
+
+.recipientMsg p{
+    font-weight: 400;
+    color: black;
+    padding: 6px 0px !important;
+    margin: 0px !important;
+    font-size: 16px;
+
+    
+}
+
+.recipientMsg span{
+    font-size: 12px;
+    color: black;
+    position: relative;
+    top: 16px;
+    padding-left: 5px;
+}
+
+.sentMsgDiv{
+    background-color: rgba(128, 128, 128, 0.164);
+    padding: 8px 10px;
+    margin-top: 20px;
+
+}
+
+.sentMsgDiv input{
+    margin: 0 !important;
+}
+
+.sentMsgDiv input::placeholder{
+    text-transform: none !important;
+    color: gray;
+}
+.sentMsgDiv input:focus{
+    outline: none;
+}
+
+
+.sentBtn{
+    color: gray;
+    font-weight: bolder;
+    font-size: 25px;
+    margin-left: 10px;
+}
+
+.sentMsgDiv button{
+    padding: 0px;
+    margin: 0px;
+    display: inline;
+    background-color:rgba(128, 128, 128, 0)
+}
+
+.homeLink{
+    margin-left: auto;
+    padding-top: 15px;
+    font-weight: bold;
+    color: dodgerblue;
+    font-size: 18px;
+    letter-spacing: 0.1em;
+}
+
+.homeLink:hover{
+    color: dodgerblue;
+}
+
+
+
