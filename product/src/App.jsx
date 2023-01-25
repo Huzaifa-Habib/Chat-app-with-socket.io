@@ -27,7 +27,7 @@ function App() {
       
     }
     else{
-      baseUrl = "https://lazy-pear-caterpillar-slip.cyclic.app"
+      baseUrl = "https://breakable-tuna-moccasins.cyclic.app"
     }
   
 
