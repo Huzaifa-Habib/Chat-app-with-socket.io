@@ -403,7 +403,7 @@ const server = createServer(app);
 // handing over server access to socket.io
 const io = new socketIo(server, {
     cors: {
-        origin: ["http://localhost:3001"],
+        origin: ["http://localhost:3001", "https://chat-app-with-socketio-production.up.railway.app"],
         credentials: true
     }
 });
