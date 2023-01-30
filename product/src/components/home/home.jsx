@@ -52,7 +52,7 @@ function Home (){
         console.log(`connect_error due to ${err.message}`);
     });
 
-    console.log("subscribed: ", `personal-channel-${state.user._id}`);
+    console.log("subscribed: ", `personal-channel-${state?.user?._id}`);
 
     socket.on(`personal-channel-${state.user._id}`, function (data) {
         console.log("socket push data: ", data);
