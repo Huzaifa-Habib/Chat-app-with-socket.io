@@ -2,7 +2,6 @@ import axios from "axios";
 import { useEffect, useState, useContext } from 'react';
 import { GlobalContext } from '../../context/context';
 import moment from 'moment';
-import InfiniteScroll from 'react-infinite-scroller';
 import { useParams } from "react-router-dom";
 import { FaUserCircle } from 'react-icons/fa';
 import { RxPaperPlane} from 'react-icons/rx';
