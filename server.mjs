@@ -11,6 +11,9 @@ import {
     varifyHash,
 } from "bcrypt-inzi"
 import { userModel,otpModel,tweetModel,messageModel } from './routes/dbmodels.mjs'
+import { Server as socketIo } from 'socket.io';
+import { createServer } from "http";
+import cookie from 'cookie';
 
 
 
@@ -349,6 +352,18 @@ app.post('/api/v1/message', async (req, res) => {
     })
 
     console.log("sent: ", sent)
+    
+    const populatedMessage = await messageModel
+        .findById(sent._id)
+        .populate({ path: 'from', select: 'firstName lastName email' })
+        .populate({ path: 'to', select: 'firstName lastName email' })
+        .exec();
+
+
+    io.emit(`${req.body.to}-${req.body.token._id}`, populatedMessage)
+    io.emit(`personal-channel-${req.body.to}`, populatedMessage)
+
+    console.log("populatedMessage: ", populatedMessage)
 
     res.send("message sent successfully");
 })
@@ -370,23 +385,75 @@ app.get('/api/v1/messages/:id', async (req, res) => {
         .populate({ path: 'from', select: 'firstName lastName email' })
         .populate({ path: 'to', select: 'firstName lastName email' })
         .limit(100)
-        .sort({ _id: -1 })
+        .sort({ _id: 1 })
         .exec();
 
     res.send(messages);
 
 })
 
-
-
-
-
-
 const __dirname = path.resolve();
 app.use('/', express.static(path.join(__dirname, './product/build')))
 app.use('*', express.static(path.join(__dirname, './product/build')))
 
-app.listen(port, () => {
+
+// THIS IS THE ACTUAL SERVER WHICH IS RUNNING
+const server = createServer(app);
+
+// handing over server access to socket.io
+const io = new socketIo(server, {
+    cors: {
+        origin: ["http://localhost:3001"],
+        credentials: true
+    }
+});
+
+server.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
 })
+
+io.on("connection", (socket) => {
+    console.log("New client connected with id: ", socket.id);
+
+    if (typeof socket?.request?.headers?.cookie !== "string") {
+        console.log("cookie was not found");
+        socket.disconnect(true)
+        return;
+    }
+
+    let cookieData = cookie.parse(socket?.request?.headers?.cookie);
+    console.log("cookieData: ", cookieData);
+
+    if (!cookieData?.Token) {
+        console.log("Token not found in cookie");
+        socket.disconnect(true)
+        return;
+    }
+
+    jwt.verify(cookieData?.Token, SECRET, function (err, decodedData) {
+        if (!err) {
+            console.log("decodedData: ", decodedData);
+            const nowDate = new Date().getTime() / 1000;
+            if (decodedData.exp < nowDate) {
+                socket.disconnect(true)
+            }
+        } else {
+            socket.disconnect(true)
+        }
+    });
+
+
+    // to emit data to a certain client
+    socket.emit("topic 1", "some data")
+
+    // collecting connected users in a array
+    // connectedUsers.push(socket)
+
+    socket.on("disconnect", (message) => {
+        console.log("Client disconnected with id: ", message);
+    });
+});
+
+
+
 

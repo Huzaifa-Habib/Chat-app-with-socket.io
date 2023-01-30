@@ -1,8 +1,9 @@
 import "./login.css"
-import { useState,useRef,useContext } from 'react';
+import { useState,useRef,useContext,useEffect } from 'react';
 import axios from "axios"
 import {useNavigate} from "react-router-dom"
 import { GlobalContext } from '../../context/context';
+import { io } from "socket.io-client";
 
 
 
@@ -28,6 +29,34 @@ function Login() {
     const [password,setPassword] =useState ("") 
     let navigate = useNavigate();
     let { state, dispatch } = useContext(GlobalContext);
+
+    
+    useEffect(() => {
+
+      const socket = io(state.baseUrlSocketIo, {
+          withCredentials: true
+      });
+
+      socket.on('connect', function () {
+          console.log("connected")
+      });
+      socket.on('disconnect', function (message) {
+          console.log("Socket disconnected from server: ", message);
+      });
+      socket.on("connect_error", (err) => {
+          console.log(`connect_error due to ${err.message}`);
+      });
+
+      socket.on(`personal-channel`, function (data) {
+          console.log("socket push data: ", data);
+      });
+
+      return () => {
+          socket.close();
+      }
+
+  }, [])
+
 
 
     const loginHandler = (event)=>{

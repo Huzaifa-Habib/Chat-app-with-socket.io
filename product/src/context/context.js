@@ -5,7 +5,10 @@ export const GlobalContext = createContext("Initial Value");
 
 let data = {
   isLogin: null,
-  user:{}
+  user:{},
+  baseUrlSocketIo: (window.location.href.includes('localhost'))
+  ?
+  `http://localhost:3000` : ``
 }
 
 export default function ContextProvider({ children }) {

@@ -13,7 +13,7 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import Button from 'react-bootstrap/Button';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
-
+import { io } from "socket.io-client";
 
 
 let baseUrl = ""
@@ -34,6 +34,36 @@ function Home (){
 
   const [searchTerm, setSearchTerm] = useState("");
   const [users, setUsers] = useState(null);
+  const [notifications, setNotifications] = useState([]);
+
+  useEffect(() => {
+
+    const socket = io(state.baseUrlSocketIo, {
+        withCredentials: true
+    });
+
+    socket.on('connect', function () {
+        console.log("connected")
+    });
+    socket.on('disconnect', function (message) {
+        console.log("Socket disconnected from server: ", message);
+    });
+    socket.on("connect_error", (err) => {
+        console.log(`connect_error due to ${err.message}`);
+    });
+
+    console.log("subscribed: ", `personal-channel-${state.user._id}`);
+
+    socket.on(`personal-channel-${state.user._id}`, function (data) {
+        console.log("socket push data: ", data);
+        setNotifications(prev => [...prev, data])
+    });
+
+    return () => {
+        socket.close();
+    }
+
+  }, [])
 
   useEffect(() => {
 
@@ -51,7 +81,6 @@ function Home (){
 
       } catch (error) {
           console.log("error in getting all tweets", error);
-          // setUsers([])
       }
   }
 
