@@ -13,7 +13,7 @@ if (window.location.href.split(":")[0] === "http") {
 }
 
 else{
-  baseUrl = "https://breakable-tuna-moccasins.cyclic.app"
+  baseUrl = "https://chat-app-with-socketio-production.up.railway.app"
 }
 
 

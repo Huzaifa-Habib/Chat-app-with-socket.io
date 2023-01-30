@@ -27,7 +27,7 @@ function App() {
       
     }
     else{
-      baseUrl = "https://breakable-tuna-moccasins.cyclic.app"
+      baseUrl = "https://chat-app-with-socketio-production.up.railway.app"
     }
   
 
