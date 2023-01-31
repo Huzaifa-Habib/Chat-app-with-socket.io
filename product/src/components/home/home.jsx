@@ -3,7 +3,7 @@ import {GlobalContext} from "../../context/context"
 import axios from "axios";
 import moment from 'moment';
 import InfiniteScroll from 'react-infinite-scroller';
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState, useContext,useRef } from 'react';
 import { Link } from "react-router-dom";
 import { BsSearch,BsThreeDotsVertical } from 'react-icons/bs';
 import { FaUserCircle } from 'react-icons/fa';
@@ -14,6 +14,14 @@ import Button from 'react-bootstrap/Button';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import { io } from "socket.io-client";
+import Toast from 'react-bootstrap/Toast';
+import boopSfx from "../../assets/notification.mp3";
+import Spinner from 'react-bootstrap/Spinner';
+
+
+
+
+
 
 
 let baseUrl = ""
@@ -36,6 +44,12 @@ function Home (){
   const [users, setUsers] = useState(null);
   const [notifications, setNotifications] = useState([]);
 
+  const [show, setShow] = useState(true);
+  const audio = new Audio(boopSfx);
+
+ 
+
+
   useEffect(() => {
 
     const socket = io(state.baseUrlSocketIo, {
@@ -52,11 +66,13 @@ function Home (){
         console.log(`connect_error due to ${err.message}`);
     });
 
-    console.log("subscribed: ", `personal-channel-${state?.user?._id}`);
+    console.log("subscribed: ", `personal-channel-${state.user._id}`);
 
     socket.on(`personal-channel-${state.user._id}`, function (data) {
         console.log("socket push data: ", data);
         setNotifications(prev => [...prev, data])
+        audio.play();
+       
     });
 
     return () => {
@@ -64,6 +80,8 @@ function Home (){
     }
 
   }, [])
+
+
 
   useEffect(() => {
 
@@ -103,9 +121,45 @@ function Home (){
   }
 
 
+
+  
+  const dismissNotification = (notification) => {
+    setNotifications(
+        allNotifications => allNotifications.filter(eachItem => eachItem._id !== notification._id)
+    )
+    setShow(false)
+  }
+
+
+
   return (
       <div className="main-div">
+        
         <div className="home-subDiv">
+                
+        <div className='notificationView' >
+            {
+              notifications.map((eachNotification, index) => {
+                  return <div key={index} className="item">
+                    
+                            <Toast style={{marginTop:"10px"}}>
+                              <strong className="me-auto" style={{paddingLeft:"10px" ,fontSize:"18px", paddingTop:"20px", textTransform:"capitalize"}}>{eachNotification.from.firstName} {eachNotification.from.lastName}</strong>
+                              <div onClick={() => { dismissNotification(eachNotification) }} className="close"> X </div>
+                              <Link to={`/chat/${eachNotification.from._id}`}>
+                                  <Toast.Body>{eachNotification.text.slice(0, 100)}</Toast.Body>
+                              </Link>
+
+                            </Toast>
+                
+                           </div>
+              })
+            }
+
+          </div>
+
+     
+
+         
           <div className="homeNav">
             <img src={state.user.profileImage} alt="Profile Photo" height="40" width="40" />
             <Dropdown className="drop">
@@ -124,6 +178,8 @@ function Home (){
 
           </div>
          <div className="left-pannel">
+   
+
               <form onSubmit={getUsers}>
           
                   {/* <button type="submit">Search</button> */}
@@ -150,7 +206,7 @@ function Home (){
                     return <div className='userListItem' key={index}>
                             <Link to={`/chat/${eachUser._id}`}>
                               <div className="user">
-                                <img src={(eachUser.profileImg)?eachUser?.profileImg:<FaUserCircle/>} alt="users profile" height="45" width="45" />
+                                <img src={(!eachUser.profileImg)?"https://img.icons8.com/material-rounded/256/user.png":eachUser?.profileImg} alt="users profile" height="45" width="45" />
                                 <p>{eachUser.firstName} {eachUser.lastName}</p>
                               </div>
                           
@@ -160,8 +216,12 @@ function Home (){
                   : null
               }
               {(users?.length === 0 ? "No users found" : null)}
-              {(users === null ? "Loading..." : null)}
+              <div style={{position:"absolute", top:"50%",left: "50%"}}>
+                {(users === null ? <Spinner animation="grow" variant="primary" /> : null)}
+              </div>
+        
           </div>
+
 
        
          
