@@ -137,6 +137,10 @@ button{
         width: calc(70vw) !important;
     }
 
+    .error-div{
+        width: calc(60vw);
+    }
+
 
 }
 
@@ -154,6 +158,10 @@ button{
         
     }
 
+    .error-div{
+        width: calc(80vw);
+    }
+
 }
 
 
@@ -163,6 +171,10 @@ button{
     }
     button{
         padding: 5px 20px;
+    }
+
+    .error-div{
+        width: calc(90vw);
     }
 
 }

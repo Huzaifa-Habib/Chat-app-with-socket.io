@@ -106,9 +106,3 @@ button{
     margin-top: 20px;
 }
 
-@media screen and (max-width:730px) {
-    .sub-div {
-        width: calc(70vw);
-    }
-    
-}
