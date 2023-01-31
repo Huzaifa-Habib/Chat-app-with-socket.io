@@ -13,6 +13,7 @@ body{
     background-color: rgba(128, 128, 128, 0.158);
     padding: 10px 20px;
     display: flex;
+    width: 100%;
     
 }
 
@@ -40,22 +41,20 @@ body{
 }
 
 .chatBox{
-    width: calc(60vw);
-    margin-left: auto;
-    margin-right: auto;
     background-color: #ece5dd;
     /* padding-bottom: 20px; */
-    border-radius: 5px;
+    border-radius: 10px;
+   
    
 }
 
 .messagesDiv{
-    display: flex;
-    flex-direction: column;
     margin-top: 10px;
     padding-top: 20px;
     overflow-y: scroll;
     height: calc(75vh);
+    display: flex;
+    flex-direction: column;
 
 
 
@@ -63,73 +62,94 @@ body{
 
 .myMsg{
     background-color: #25d36549;
-    padding: 0px 15px;
-    border-radius: 4px;
+    padding: 0px 10px;
     margin-right: 20px;
-    margin-top: 10px;
-    display: inline-flex;
-    float: right;
+    margin-top: 12px;
     border-radius: 15px 15px 0px 15px;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-
-
-    
+    max-width: 50%;
+    margin-left: 10px;
+    display: inline-flex;
+    flex-direction: column;
+    float: right;
 
 
 }
 
-.myMsg p{
+.myMsgTxt{
     font-weight: 400;
     color: black;
     padding: 6px 0px !important;
     margin: 0px !important;
     font-size: 16px;
+    display: flex;
+    flex-direction: column;
+    word-break: break-all;
+
 
     
 }
 
-.myMsg span{
+.myTime{
     font-size: 12px;
-    color: black;
-    position: relative;
-    top: 16px;
-    padding-left: 5px;
+    color: rgba(0, 0, 0, 0.726);;
+    font-weight: bold;
+    padding-left: 10px;
+    display: flex;
+    justify-content: flex-end;
+    align-self: flex-end;
 }
 
 .recipientMsg{
     background-color: white;
-    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-    display: inline-flex;
-    padding: 0px 15px;
-    border-radius: 4px;
-    margin-top: 20px;
-    margin-left: 20px;
+    padding: 0px 10px;
+    margin-right: 20px;
+    margin-top: 12px;
     border-radius: 15px 15px 0px 15px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    max-width: 50%;
+    margin-left: 10px;
+    display: inline-flex;
+    flex-direction: column;
 
 }
 
-.recipientMsg p{
+.resMsgTxt{
     font-weight: 400;
     color: black;
     padding: 6px 0px !important;
     margin: 0px !important;
     font-size: 16px;
+    display: flex;
+    flex-direction: column;
+    word-break: break-all;
 
-    
+
+
+
+ 
 }
 
-.recipientMsg span{
+.resTime{
     font-size: 12px;
-    color: black;
-    position: relative;
-    top: 16px;
-    padding-left: 5px;
+    color: rgba(0, 0, 0, 0.726);;
+    font-weight: bold;
+    padding-left: 10px;
+    display: flex;
+    justify-content: flex-end;
+    align-self: flex-end;
+
+   
+
+
+ 
 }
 
 .sentMsgDiv{
     background-color: rgba(128, 128, 128, 0.164);
     padding: 8px 10px;
     margin-top: 20px;
+
 }
 
 .sentMsgDiv input{
@@ -179,8 +199,56 @@ body{
     margin-left: 20px;
     z-index: 2;
 
-
- 
 }
+
+
+@media screen and (max-width:900px) {
+    .chatBox{
+        width: calc(80vw);
+    }
+  
+}
+
+
+@media screen and (max-width:700px) {
+    .chatBox{
+        width: calc(100vw);
+    }
+    
+}
+
+@media screen and (max-width:500px) {
+    .myMsg{
+        max-width: 65%;
+       
+    }
+
+    .recipientMsg{
+        max-width: 65%;
+    }
+
+  
+
+}
+
+
+@media screen and (max-width:400px) {
+    .myMsg{
+        max-width: 80%;
+       
+    }
+
+    .recipientMsg{
+        max-width:80%;
+    }
+
+    .sentMsgDiv input{
+        width: 85%;
+    }
+    
+  
+
+}
+
 
 

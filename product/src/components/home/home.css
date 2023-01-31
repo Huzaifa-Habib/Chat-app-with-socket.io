@@ -174,3 +174,43 @@ body{
     cursor: pointer;
     
 }
+
+
+@media screen and (max-width:800px) {
+    .homeNav{
+        width:calc(60vw)
+
+
+    }
+    .left-pannel{
+        width:calc(60vw)
+    }
+    
+}
+
+@media screen and (max-width:550px) {
+    .homeNav{
+        width:calc(80vw)
+
+
+    }
+    .left-pannel{
+        width:calc(80vw)
+    }
+    
+}
+
+@media screen and (max-width:350px) {
+    .homeNav{
+        width:calc(100vw);
+
+
+
+    }
+    .left-pannel{
+        width:calc(100vw);
+    
+
+    }
+    
+}

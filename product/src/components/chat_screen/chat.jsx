@@ -169,17 +169,18 @@ function ChatScreen() {
                     <div className="messagesDiv">
                         {(conversation?.length) ?
                             conversation?.map((eachMessage, index) => {
+
                                 return <div key={index}>
                                             {(eachMessage.from.firstName == state.user.firstName && eachMessage.from.lastName == state.user.lastName)?
                                                 <div className="myMsg">
-                                                    <p>{eachMessage.text} </p>
-                                                    <span>{moment(eachMessage.createdOn).fromNow()}</span>
+                                                    <div className="myMsgTxt">{eachMessage.text} </div>
+                                                    <div className="myTime">{moment(eachMessage.createdOn).fromNow()}</div>
 
                                                 </div> 
                                                 :
                                                 <div className="recipientMsg">
-                                                    <p>{eachMessage.text} </p>
-                                                    <span>{moment(eachMessage.createdOn).fromNow()}</span>
+                                                    <div className="resMsgTxt">{eachMessage.text} </div>
+                                                    <div className="resTime">{moment(eachMessage.createdOn).fromNow()}</div>
                                                 </div>
                                             }
                                         </div>
@@ -197,7 +198,7 @@ function ChatScreen() {
                             <form onSubmit={sendMessage}>
                                 <input type="text" placeholder='Type a message' onChange={(e) => [
                                     setWriteMessage(e.target.value)
-                                ]} required />
+                                ]} required maxLength="200"/>
                             <button type="submit"><RxPaperPlane  className="sentBtn"/></button>
                             </form>
                         </div>
