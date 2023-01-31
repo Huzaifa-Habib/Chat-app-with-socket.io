@@ -74,8 +74,8 @@ function ChatScreen() {
             console.log(`connect_error due to ${err.message}`);
         });
 
-        console.log("subscribed: ", `${state.user._id}-${id}`);
-        socket.on(`${state.user._id}-${id}`, function (data) {
+        console.log("subscribed: ", `${state?.user?._id}-${id}`);
+        socket.on(`${state?.user?._id}-${id}`, function (data) {
 
             console.log(data);
             setConversation(prev => [data, ...prev])
