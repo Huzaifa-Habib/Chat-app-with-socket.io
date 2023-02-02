@@ -76,7 +76,7 @@ function Login() {
             window.location.reload();
             dispatch({
               type: 'USER_LOGIN',
-              payload: response.data.profile
+              payload: null
             })
 
         

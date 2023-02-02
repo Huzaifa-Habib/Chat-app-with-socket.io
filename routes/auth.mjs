@@ -89,7 +89,7 @@ router.post("/signup", (req, res) => {
 
 
 
-router.post("/login", (req, res) => {
+router.post("/login",(req, res) => {
 
     let body = req.body;
     body.email = body.email.toLowerCase();
@@ -107,8 +107,8 @@ router.post("/login", (req, res) => {
 
     // check if user exist
     userModel.findOne(
-        { email: body.email },
-        "firstName lastName email password",
+        { email: body.email},
+        "firstName lastName email password isOnline",
         (err, data) => {
             if (!err) {
                 console.log("data: ", data);
@@ -136,8 +136,9 @@ router.post("/login", (req, res) => {
                                 secure:true,
                                 
                             });
-                           
-                           
+                            userModel.updateOne({ email: body?.email }, { isOnline: true }).exec()
+
+
                             res.send({
                                 message: "login successful",
                                 profile: {
@@ -168,14 +169,36 @@ router.post("/login", (req, res) => {
         })
 })
 
-router.get("/logout", (req, res) => {
-    res.cookie('Token', '', {
-        maxAge: 1,
-        httpOnly: true,
-        path:"/"
-    });
+router.post("/logout", async (req, res) => {
 
-    res.send({ message: "Logout successful" });
+    try{
+        const body = req.body
+        console.log("user id ",body.email)
+        const users = await userModel.findOne(
+            { email: body.email },
+            "isOnline",
+        ).exec()
+        if (!users) throw new Error("User not found") 
+        await userModel.updateOne({ email: body.email }, { isOnline: false }).exec()
+
+        res.clearCookie('Token',{
+            httpOnly: true,
+            sameSite:"none",
+            secure:true,
+        })
+        res.send({ message: "Logout successful" });
+
+        return
+
+    }
+
+    catch (error){
+        res.status(500).send({
+            message: error.message
+        })
+
+    }
+   
 
 })
 

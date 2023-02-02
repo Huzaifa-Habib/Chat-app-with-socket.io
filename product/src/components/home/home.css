@@ -175,6 +175,11 @@ body{
     
 }
 
+.onlineDot{
+    position: relative;
+    top: 15px;
+    margin-left: auto;
+}
 
 @media screen and (max-width:800px) {
     .homeNav{

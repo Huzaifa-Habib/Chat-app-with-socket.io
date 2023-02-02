@@ -5,12 +5,15 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import moment from 'moment';
 import { useParams } from "react-router-dom";
 import { FaUserCircle } from 'react-icons/fa';
+import { BsChevronDown} from 'react-icons/bs';
 import { RxPaperPlane} from 'react-icons/rx';
 import { io } from "socket.io-client";
 import Toast from 'react-bootstrap/Toast';
 import { Link } from "react-router-dom";
 import boopSfx from "../../assets/notification.mp3";
 import Spinner from 'react-bootstrap/Spinner';
+import Dropdown from 'react-bootstrap/Dropdown';
+import DropdownButton from 'react-bootstrap/DropdownButton';
 
 import "./chat.css"
 
@@ -36,8 +39,8 @@ function ChatScreen() {
     const [recipientProfile, setRecipientProfile] = useState({});
     const [show, setShow] = useState(true);
     const audio = new Audio(boopSfx);
-
     const [notifications, setNotifications] = useState([]);
+    const [deleteForMe, setDeleteForMe] = useState(null)
 
 
 
@@ -133,7 +136,24 @@ function ChatScreen() {
             allNotifications => allNotifications.filter(eachItem => eachItem._id !== notification._id)
         )
         setShow(false)
-      }
+    }
+
+
+    const deleteMsgForMeHandler = async (msgId) =>{
+        try {
+            const response = await axios.post(`${baseUrl}/api/v1/deleteMsgForMe/`, {_id : msgId})
+            console.log("Message Visibility Response", response)
+            getMessages()
+
+            
+        } catch (error) {
+            console.log("Message visibility request for change failed ", error)
+            
+        }
+
+
+      
+    }
 
 
     return (
@@ -142,8 +162,9 @@ function ChatScreen() {
                
                 <div className="chatNav">
                   <img src={(!recipientProfile.profileImage)?"https://img.icons8.com/material-rounded/256/user.png":recipientProfile?.profileImage} alt="users profile" height="45" width="45" />
-                  <p>{recipientProfile?.firstName} {recipientProfile?.lastName}</p>
-                  <a href="/" className="homeLink">Home</a>
+                  <p>{recipientProfile?.firstName} {recipientProfile?.lastName}</p> 
+                  <p className="onlineStatus">{(recipientProfile?.isOnline === true)? "Online" : "Offline"}</p>
+                  <a href="/" className="homeLink">Back</a>
 
                 </div>
                 <div className='chatNotificationView' >
@@ -178,11 +199,43 @@ function ChatScreen() {
 
                                                 </div> 
                                                 :
-                                                <div className="recipientMsg">
-                                                    <div className="resMsgTxt">{eachMessage.text} </div>
-                                                    <div className="resTime">{moment(eachMessage.createdOn).fromNow()}</div>
-                                                </div>
+                                                    <div className={(eachMessage?.visibility !== true) ? "visibility" : "recipientMsg"}>
+                                                        <div className= "resMsgTxt">
+                                                                <Dropdown className="chatDrop">
+                                                                    <Dropdown.Toggle variant="secondary" className="chatDropToggle">
+                                                                        <BsChevronDown className="msgMenu"/>
+                                                                    </Dropdown.Toggle>
+
+                                                                    <Dropdown.Menu variant="dark">
+                                                                        <Dropdown.Item onClick={ () =>{deleteMsgForMeHandler(eachMessage?._id)  }}>
+                                                                            Delete for me
+                                                                        </Dropdown.Item>
+                                                                        <Dropdown.Item>
+                                                                            Delete for everyone
+                                                                        </Dropdown.Item>
+                                                                    </Dropdown.Menu>
+                                                                </Dropdown>
+
+                                                           
+                                                            
+                                                            {eachMessage.text}
+
+                                                            {/* <button onClick={ () =>{
+                                                                deleteMsgForMeHandler(eachMessage?._id)
+                                                            }}>Delete</button> */}
+                                                             <div className="resTime">{moment(eachMessage.createdOn).fromNow()}</div>
+
+
+                                                        </div>
+
+
+
+                                                    </div>
+
+                                                
+
                                             }
+
                                         </div>
                             })
                             : null

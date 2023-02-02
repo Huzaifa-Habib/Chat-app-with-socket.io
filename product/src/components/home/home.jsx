@@ -103,7 +103,9 @@ function Home (){
   }
 
   const logoutHandler = () =>{
-    axios.get(`${baseUrl}/api/v1/logout`,{
+    axios.post(`${baseUrl}/api/v1/logout`,{
+      email:state.user.email
+    },{
       withCredentials: true
     })
 
@@ -207,7 +209,12 @@ function Home (){
                             <Link to={`/chat/${eachUser._id}`}>
                               <div className="user">
                                 <img src={(!eachUser.profileImg)?"https://img.icons8.com/material-rounded/256/user.png":eachUser?.profileImg} alt="users profile" height="45" width="45" />
-                                <p>{eachUser.firstName} {eachUser.lastName}</p>
+                                <p>{eachUser?.firstName} {eachUser?.lastName}</p>
+                                {(eachUser.isOnline === true)?
+                                  <img src="https://img.icons8.com/emoji/1x/green-circle-emoji.png" alt="online dot" height="10" width="10" className="onlineDot" />:
+                                  null
+                                 }
+                              
                               </div>
                           
                             </Link>

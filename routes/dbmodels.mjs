@@ -23,6 +23,7 @@ const messagesSchema = new mongoose.Schema({
     text: { type: String, required: true },
     imageUrl: { type: String },
     createdOn: { type: Date, default: Date.now },
+    visibility:{type:Boolean, default:true}
 });
 messagesSchema.index({ text: 'text' });
 export const messageModel = mongoose.model('Messages', messagesSchema);
@@ -35,6 +36,7 @@ const userSchema = new mongoose.Schema({
     profileImage:{type:String},
     coverPhoto:{type:String},
     createdOn: { type: Date, default: Date.now },
+    isOnline:{type:Boolean, default:false}
 
 });
 userSchema.index({ firstName: 'text', lastName: 'text' });

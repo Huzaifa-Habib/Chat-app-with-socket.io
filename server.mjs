@@ -84,7 +84,7 @@ const getUser = async (req, res) => {
     }
 
     try {
-        const user = await userModel.findOne({ _id: _id }, "email firstName lastName _id profileImage createdOn password coverPhoto").exec()
+        const user = await userModel.findOne({ _id: _id }).exec()
         if (!user) {
             res.status(404).send({})
             return;
@@ -311,7 +311,8 @@ app.get('/api/v1/users', async (req, res) => {
                 firstName: eachUser.firstName,
                 lastName: eachUser.lastName,
                 email: eachUser.email,
-                profileImg:eachUser.profileImage
+                profileImg:eachUser.profileImage,
+                isOnline:eachUser.isOnline
             }
 
             if (eachUser._id.toString() === myId) {
@@ -391,6 +392,35 @@ app.get('/api/v1/messages/:id', async (req, res) => {
     res.send(messages);
 
 })
+
+app.post('/api/v1/deleteMsgForMe', async (req, res) => {
+    try {
+        const body = req.body;
+        const _id = body._id;
+        console.log("Msg ID " , _id)
+
+        const messages = await messageModel.findOne(
+            { _id: _id },
+            "visibility",
+        ).exec()
+        if (!messages) throw new Error("Message not found")
+
+        await messageModel.updateOne({ _id: _id }, { visibility: false }).exec()
+  
+        res.send({
+            message: "Message Visibility Change Success",
+        });
+        return;
+
+        
+    } catch (error) {
+        res.status(500).send(error.message)
+        
+    }
+
+})
+
+
 
 const __dirname = path.resolve();
 app.use('/', express.static(path.join(__dirname, './product/build')))
